@@ -1,2 +1,2 @@
-Heiße | Hot
-Frei | Free
+Heiße | Hot,
+Frei | Free,

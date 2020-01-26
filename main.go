@@ -27,6 +27,8 @@ func main() {
 		case 2:
 			PracticeFlashcards()
 		case 3:
+			DisplayFlashcards()
+		case 4:
 			quit = true
 		}
 	}
@@ -37,6 +39,10 @@ func CreateFlashcard() {
 }
 
 func PracticeFlashcards() {
+
+}
+
+func DisplayFlashcards() {
 
 }
 
@@ -51,7 +57,8 @@ func GetMenuItem() int {
 func PrintMenu() {
 	fmt.Println("1. Create new flashcard")
 	fmt.Println("2. Practice flashcard")
-	fmt.Println("3. Quit program")
+	fmt.Println("3. Display all flashcards")
+	fmt.Println("4. Quit program")
 }
 
 func GetUserInput(promptText string) string {
@@ -77,18 +84,23 @@ func ReadFlashcardStreamFromFile() []byte {
 }
 
 func ParseFlashcardsFromString(input string) []Flashcard {
-	lines := strings.Split(input, `\n`)
+	lines := strings.Split(input, ",")
 	var flashcards []Flashcard
-	for i, s := range lines {
-
+	for line := 0; line < len(lines)-1; line++ {
+		flashcards = append(flashcards, ParseSingleFlashcard(lines[line]))
 	}
 	return flashcards
 }
 
 func ParseSingleFlashcard(input string) Flashcard {
 	parts := strings.Split(input, "|")
-
-	var flashcard Flashcard {}
-
-	return flashcard
+	if parts != nil && len(parts) > 0 {
+		return Flashcard{
+			Definition: strings.TrimSpace(parts[0]),
+			Answer:     strings.TrimSpace(parts[1]),
+		}
+	}
+	fmt.Println("Error: empty string was passed into ParseSingleFlashcard")
+	var f Flashcard
+	return f
 }

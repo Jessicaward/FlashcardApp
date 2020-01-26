@@ -43,9 +43,12 @@ func PracticeFlashcards() {
 }
 
 func DisplayFlashcards(flashcards []Flashcard) {
+	fmt.Println()
 	for _, card := range flashcards {
 		fmt.Println(card.Definition, " means ", card.Answer)
 	}
+	fmt.Println()
+	GetUserInput("Finished?")
 }
 
 func GetMenuItem() int {
@@ -57,6 +60,9 @@ func GetMenuItem() int {
 }
 
 func PrintMenu() {
+	fmt.Println("=======================")
+	fmt.Println("        M E N U        ")
+	fmt.Println("=======================")
 	fmt.Println("1. Create new flashcard")
 	fmt.Println("2. Practice flashcard")
 	fmt.Println("3. Display all flashcards")

@@ -3,12 +3,22 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strconv"
+	"strings"
 )
 
+type Flashcard struct {
+	Definition string
+	Answer     string
+}
+
 func main() {
-	quit := false
+	flashcards := string(ReadFlashcardStreamFromFile())
+	ParseFlashcardsFromString(flashcards)
+
+	quit := true
 
 	for !quit {
 		switch GetMenuItem() {
@@ -56,4 +66,29 @@ func HandleError(err error) {
 		fmt.Println(err)
 		os.Exit(2)
 	}
+}
+
+func ReadFlashcardStreamFromFile() []byte {
+	file, err := os.Open("flashcards.txt")
+	HandleError(err)
+	defer file.Close()
+	b, err := ioutil.ReadAll(file)
+	return b
+}
+
+func ParseFlashcardsFromString(input string) []Flashcard {
+	lines := strings.Split(input, `\n`)
+	var flashcards []Flashcard
+	for i, s := range lines {
+
+	}
+	return flashcards
+}
+
+func ParseSingleFlashcard(input string) Flashcard {
+	parts := strings.Split(input, "|")
+
+	var flashcard Flashcard {}
+
+	return flashcard
 }

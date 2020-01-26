@@ -15,10 +15,10 @@ type Flashcard struct {
 }
 
 func main() {
-	flashcards := string(ReadFlashcardStreamFromFile())
-	ParseFlashcardsFromString(flashcards)
+	stream := string(ReadFlashcardStreamFromFile())
+	flashcards := ParseFlashcardsFromString(stream)
 
-	quit := true
+	quit := false
 
 	for !quit {
 		switch GetMenuItem() {
@@ -27,7 +27,7 @@ func main() {
 		case 2:
 			PracticeFlashcards()
 		case 3:
-			DisplayFlashcards()
+			DisplayFlashcards(flashcards)
 		case 4:
 			quit = true
 		}
@@ -42,14 +42,16 @@ func PracticeFlashcards() {
 
 }
 
-func DisplayFlashcards() {
-
+func DisplayFlashcards(flashcards []Flashcard) {
+	for _, card := range flashcards {
+		fmt.Println(card.Definition, " means ", card.Answer)
+	}
 }
 
 func GetMenuItem() int {
 	PrintMenu()
 	input := GetUserInput("Numeric option: ")
-	option, err := strconv.Atoi(input)
+	option, err := strconv.Atoi(input[0:1])
 	HandleError(err)
 	return option
 }

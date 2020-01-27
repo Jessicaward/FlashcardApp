@@ -44,9 +44,11 @@ func PracticeFlashcards() {
 
 func DisplayFlashcards(flashcards []Flashcard) {
 	fmt.Println()
+	fmt.Println("~~~~~~~~F L A S H C A R D S~~~~~~~~")
 	for _, card := range flashcards {
-		fmt.Println(card.Definition, " means ", card.Answer)
+		fmt.Println("	", card.Definition, " means ", card.Answer)
 	}
+	fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 	fmt.Println()
 	GetUserInput("Finished?")
 }

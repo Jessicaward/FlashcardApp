@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+const FlashcardFilePath = "flashcards.txt"
+
 type Flashcard struct {
 	Definition string
 	Answer     string
@@ -35,7 +37,16 @@ func main() {
 }
 
 func CreateFlashcard() {
-
+	fmt.Println()
+	definition := GetUserInput("Definition: ")
+	answer := GetUserInput("Answer: ")
+	WriteFlashcardToFile(Flashcard{
+		Definition: definition,
+		Answer:     answer,
+	})
+	fmt.Println()
+	fmt.Println("Flashcard created")
+	fmt.Println()
 }
 
 func PracticeFlashcards() {
@@ -86,7 +97,7 @@ func HandleError(err error) {
 }
 
 func ReadFlashcardStreamFromFile() []byte {
-	file, err := os.Open("flashcards.txt")
+	file, err := os.Open(FlashcardFilePath)
 	HandleError(err)
 	defer file.Close()
 	b, err := ioutil.ReadAll(file)
@@ -113,4 +124,15 @@ func ParseSingleFlashcard(input string) Flashcard {
 	fmt.Println("Error: empty string was passed into ParseSingleFlashcard")
 	var f Flashcard
 	return f
+}
+
+func WriteFlashcardToFile(flashcard Flashcard) {
+	f, err := os.Open(FlashcardFilePath)
+	HandleError(err)
+	fmt.Fprintln(f, BuildFlashcardString(flashcard))
+	HandleError(f.Close())
+}
+
+func BuildFlashcardString(flashcard Flashcard) string {
+	return flashcard.Definition + " | " + flashcard.Answer + ","
 }

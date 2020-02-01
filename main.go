@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"strconv"
@@ -127,12 +128,25 @@ func ParseSingleFlashcard(input string) Flashcard {
 }
 
 func WriteFlashcardToFile(flashcard Flashcard) {
-	f, err := os.Open(FlashcardFilePath)
+	err := WriteStringToFile(FlashcardFilePath, BuildFlashcardString(flashcard))
 	HandleError(err)
-	fmt.Fprintln(f, BuildFlashcardString(flashcard))
-	HandleError(f.Close())
 }
 
 func BuildFlashcardString(flashcard Flashcard) string {
 	return flashcard.Definition + " | " + flashcard.Answer + ","
+}
+
+func WriteStringToFile(filepath, s string) error {
+	fo, err := os.Create(filepath)
+	if err != nil {
+		return err
+	}
+	defer fo.Close()
+
+	_, err = io.Copy(fo, strings.NewReader(s))
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

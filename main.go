@@ -17,12 +17,12 @@ type Flashcard struct {
 }
 
 func main() {
-	stream := string(ReadFlashcardStreamFromFile())
-	flashcards := ParseFlashcardsFromString(stream)
-
 	quit := false
 
 	for !quit {
+		//Flashcards should be loaded on each menu "tick"
+		stream := string(ReadFlashcardStreamFromFile())
+		flashcards := ParseFlashcardsFromString(stream)	
 		switch GetMenuItem() {
 		case 1:
 			CreateFlashcard()

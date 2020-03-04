@@ -1,4 +1,10 @@
 Heiße | Hot,
-Frei | Free,Test
- | Test
+Frei | Free,Flugzeug
+ | Airplane
+,
+Essen
+ | Food
+,
+Spielzeug
+ | Toy
 ,

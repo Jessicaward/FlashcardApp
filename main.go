@@ -27,7 +27,7 @@ func main() {
 		case 1:
 			CreateFlashcard()
 		case 2:
-			PracticeFlashcards()
+			PracticeFlashcards(flashcards)
 		case 3:
 			DisplayFlashcards(flashcards)
 		case 4:
@@ -49,8 +49,16 @@ func CreateFlashcard() {
 	fmt.Println()
 }
 
-func PracticeFlashcards() {
-
+func PracticeFlashcards(flashcards []Flashcard) {
+	//Pseudocode
+	//Get number of questions from user
+	//For each one, ask about a random definition
+		//If the user provides (roughly) the correct answer (e.g ignoring case and symbols)
+			//Add answer to correct answers
+		//Else
+			//Add answer to incorrect answers
+	//Give user report on all correct definitions, and incorrect definitions.
+	//Make it look pretty, using green text for correct, red rext for incorrect etc
 }
 
 func DisplayFlashcards(flashcards []Flashcard) {

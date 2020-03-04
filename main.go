@@ -127,18 +127,30 @@ func ParseSingleFlashcard(input string) Flashcard {
 }
 
 func WriteFlashcardToFile(flashcard Flashcard) {
-	bytes := []byte(BuildFlashcardString(flashcard))
-	AppendBytesToFile(FlashcardFilePath, bytes)
+	text := BuildFlashcardString(flashcard)
+	AppendLineToFile(FlashcardFilePath, text)
 }
 
 func BuildFlashcardString(flashcard Flashcard) string {
 	return flashcard.Definition + " | " + flashcard.Answer + ","
 }
 
-func AppendBytesToFile(filePath string, bytes []byte) {
-	f, err := os.Create(filePath)
-	HandleError(err)
-	defer f.Close()
-	_, err = f.Write(bytes)
-	HandleError(err)
+func AppendLineToFile(filepath string, line string) {
+	f, err := os.OpenFile(filepath, os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil{
+		HandleError(err)
+		return
+	}
+	_, err = fmt.Fprintln(f, line)
+	if err != nil {
+		HandleError(err)
+		f.Close()
+		return
+	}
+
+	err = f.Close()
+	if err != nil{
+		HandleError(err)
+		return
+	}
 }

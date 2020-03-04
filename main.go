@@ -55,11 +55,18 @@ func PracticeFlashcards() {
 
 func DisplayFlashcards(flashcards []Flashcard) {
 	fmt.Println()
-	fmt.Println("~~~~~~~~F L A S H C A R D S~~~~~~~~")
+	fmt.Println("~~~~~~~~~~~~~~~~~~ F L A S H C A R D S ~~~~~~~~~~~~~~~~~~")
 	for _, card := range flashcards {
-		fmt.Println("	", card.Definition, " means ", card.Answer)
+		fmt.Println(" ")
+		for i := 0; i < 25 - len(card.Definition); i++ {
+			//Formatting - pad left
+			fmt.Print(" ")
+		}
+		fmt.Printf(card.Definition)
+		fmt.Print(" means ", card.Answer)
 	}
-	fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+	fmt.Println()
+	fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 	fmt.Println()
 	GetUserInput("Finished?")
 }
@@ -135,6 +142,7 @@ func BuildFlashcardString(flashcard Flashcard) string {
 	return flashcard.Definition + " | " + flashcard.Answer + ","
 }
 
+//todo: maybe there is a better way of handling errors? 50% of this function is error handling code.
 func AppendLineToFile(filepath string, line string) {
 	f, err := os.OpenFile(filepath, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil{

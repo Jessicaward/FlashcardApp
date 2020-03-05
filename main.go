@@ -50,6 +50,11 @@ func CreateFlashcard() {
 }
 
 func PracticeFlashcards(flashcards []Flashcard) {
+	numberOfQuestions, err := strconv.Atoi(GetUserInput("Enter the number of questions you would like: "))
+	
+	HandleError(err)
+
+
 	//Pseudocode
 	//Get number of questions from user
 	//For each one, ask about a random definition
@@ -150,23 +155,11 @@ func BuildFlashcardString(flashcard Flashcard) string {
 	return flashcard.Definition + " | " + flashcard.Answer + ","
 }
 
-//todo: maybe there is a better way of handling errors? 50% of this function is error handling code.
 func AppendLineToFile(filepath string, line string) {
 	f, err := os.OpenFile(filepath, os.O_APPEND|os.O_WRONLY, 0644)
-	if err != nil{
-		HandleError(err)
-		return
-	}
+	HandleError(err)
 	_, err = fmt.Fprintln(f, line)
-	if err != nil {
-		HandleError(err)
-		f.Close()
-		return
-	}
-
+	HandleError(err)
 	err = f.Close()
-	if err != nil{
-		HandleError(err)
-		return
-	}
+	HandleError(err)
 }

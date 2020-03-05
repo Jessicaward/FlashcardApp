@@ -7,6 +7,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"math/rand"
 )
 
 const FlashcardFilePath = "flashcards.txt"
@@ -21,8 +22,7 @@ func main() {
 
 	for !quit {
 		//Flashcards should be loaded on each menu "tick"
-		stream := string(ReadFlashcardStreamFromFile())
-		flashcards := ParseFlashcardsFromString(stream)	
+		flashcards := GetFlashcards()
 		switch GetMenuItem() {
 		case 1:
 			CreateFlashcard()
@@ -49,21 +49,47 @@ func CreateFlashcard() {
 	fmt.Println()
 }
 
+func GetFlashcards() []Flashcard {
+	stream := string(ReadFlashcardStreamFromFile())
+	return ParseFlashcardsFromString(stream)
+}
+
 func PracticeFlashcards(flashcards []Flashcard) {
+	//todo: this should keep track of the user's incorrect answers, not just which answer was incorrect
 	numberOfQuestions, err := strconv.Atoi(GetUserInput("Enter the number of questions you would like: "))
-	
+	var correctFlashcards []Flashcard
+	var incorrectFlashcards []Flashcard
+
 	HandleError(err)
 
+	if(numberOfQuestions == 0) {
+		return 
+	}
 
-	//Pseudocode
-	//Get number of questions from user
-	//For each one, ask about a random definition
-		//If the user provides (roughly) the correct answer (e.g ignoring case and symbols)
-			//Add answer to correct answers
-		//Else
-			//Add answer to incorrect answers
-	//Give user report on all correct definitions, and incorrect definitions.
-	//Make it look pretty, using green text for correct, red rext for incorrect etc
+	for i := 0; i < numberOfQuestions; i++ {
+		randomFlashcard := flashcards[rand.Intn(len(flashcards))]
+		if(AskQuestion(randomFlashcard)) {
+			correctFlashcards = append(correctFlashcards, randomFlashcard)
+		} else {
+			incorrectFlashcards = append(incorrectFlashcards, randomFlashcard)
+		}
+	}
+}
+
+///This returns whether the user correctly answered the question or not
+func AskQuestion(flashcard Flashcard) bool {
+	fmt.Println("Definition: ", flashcard.Definition)
+	userAnswer := GetUserInput("Answer: ")
+	return CheckAnswer(flashcard.Answer, userAnswer)
+}
+
+func CheckAnswer(correctAnswer string, userAnswer string) bool {
+	//todo: expand this to ignore case, base it on similarity (ignoring umlauts and special characters etc)
+	return correctAnswer == userAnswer
+}
+
+func ShowGameReport(correctFlashcards []Flashcard, incorrectFlashcards []Flashcard) {
+	
 }
 
 func DisplayFlashcards(flashcards []Flashcard) {

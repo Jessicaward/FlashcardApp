@@ -55,6 +55,7 @@ func GetFlashcards() []Flashcard {
 
 func PracticeFlashcards(flashcards []Flashcard) {
 	//todo: this should keep track of the user's incorrect answers, not just which answer was incorrect
+	//todo: the [0:1] part is to attempt to get numbers from the string, instead I need to strip the \r\n part
 	numberOfQuestions, err := strconv.Atoi(GetUserInput("Enter the number of questions you would like: ")[0:1])
 	var correctFlashcards []Flashcard
 	var incorrectFlashcards []Flashcard
@@ -73,6 +74,8 @@ func PracticeFlashcards(flashcards []Flashcard) {
 			incorrectFlashcards = append(incorrectFlashcards, randomFlashcard)
 		}
 	}
+
+	ShowGameReport(correctFlashcards, incorrectFlashcards)
 }
 
 ///This returns whether the user correctly answered the question or not
@@ -88,7 +91,29 @@ func CheckAnswer(correctAnswer string, userAnswer string) bool {
 }
 
 func ShowGameReport(correctFlashcards []Flashcard, incorrectFlashcards []Flashcard) {
-
+	fmt.Println()
+	fmt.Println()
+	fmt.Println("~~~~~~~~~~Report~~~~~~~~~~")
+	fmt.Println()
+	fmt.Println("You got ", len(correctFlashcards), " correct and ", len(incorrectFlashcards), " incorrect.")
+	if len(correctFlashcards) > 0 {
+		fmt.Println("~~~Correct Answers~~~")
+		for _, correct := range correctFlashcards {
+			fmt.Println("	Definition: ", correct.Definition)
+			fmt.Println("	Answer: ", correct.Answer)
+		}
+	}
+	if len(incorrectFlashcards) > 0 {
+		fmt.Println("~~~Incorrect answers~~~")
+		for _, incorrect := range incorrectFlashcards {
+			fmt.Println("	Definition: ", incorrect.Definition)
+			fmt.Println("	Answer: ", incorrect.Answer)
+		}
+	}
+	fmt.Println()
+	fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~")
+	fmt.Println()
+	fmt.Println()
 }
 
 func DisplayFlashcards(flashcards []Flashcard) {

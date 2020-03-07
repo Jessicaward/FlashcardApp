@@ -56,7 +56,7 @@ func GetFlashcards() []Flashcard {
 func PracticeFlashcards(flashcards []Flashcard) {
 	//todo: this should keep track of the user's incorrect answers, not just which answer was incorrect
 	//todo: the [0:1] part is to attempt to get numbers from the string, instead I need to strip the \r\n part
-	numberOfQuestions, err := strconv.Atoi(GetUserInput("Enter the number of questions you would like: ")[0:1])
+	numberOfQuestions, err := strconv.Atoi(strings.Trim(GetUserInput("Enter the number of questions you would like: "), "\r\n"))
 	var correctFlashcards []Flashcard
 	var incorrectFlashcards []Flashcard
 

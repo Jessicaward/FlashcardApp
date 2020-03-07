@@ -60,7 +60,6 @@ func GetFlashcards() []Flashcard {
 }
 
 func PracticeFlashcards(flashcards []Flashcard) {
-	//todo: this should keep track of the user's incorrect answers, not just which answer was incorrect
 	numberOfQuestions, err := strconv.Atoi(strings.Trim(GetUserInput("Enter the number of questions you would like: "), "\r\n"))
 	var correctFlashcards []Flashcard
 	var incorrectFlashcards []UserFlashcard

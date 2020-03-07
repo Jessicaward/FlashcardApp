@@ -1,5 +1,10 @@
-Heiße | Hot,
-Frei | Free,Flugzeug
+Heiße
+ | Hot
+,
+Frei
+ | Free
+,
+Flugzeug
  | Airplane
 ,
 Essen

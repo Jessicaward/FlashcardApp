@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"os"
 	"strconv"
 	"strings"
-	"math/rand"
 )
 
 const FlashcardFilePath = "flashcards.txt"
@@ -62,13 +62,13 @@ func PracticeFlashcards(flashcards []Flashcard) {
 
 	HandleError(err)
 
-	if(numberOfQuestions == 0) {
-		return 
+	if numberOfQuestions == 0 {
+		return
 	}
 
 	for i := 0; i < numberOfQuestions; i++ {
 		randomFlashcard := flashcards[rand.Intn(len(flashcards))]
-		if(AskQuestion(randomFlashcard)) {
+		if AskQuestion(randomFlashcard) {
 			correctFlashcards = append(correctFlashcards, randomFlashcard)
 		} else {
 			incorrectFlashcards = append(incorrectFlashcards, randomFlashcard)
@@ -86,8 +86,7 @@ func AskQuestion(flashcard Flashcard) bool {
 }
 
 func CheckAnswer(correctAnswer string, userAnswer string) bool {
-	//todo: expand this to ignore case, base it on similarity (ignoring umlauts and special characters etc)
-	return correctAnswer == userAnswer
+	return strings.EqualFold(correctAnswer, userAnswer)
 }
 
 func ShowGameReport(correctFlashcards []Flashcard, incorrectFlashcards []Flashcard) {
@@ -121,7 +120,7 @@ func DisplayFlashcards(flashcards []Flashcard) {
 	fmt.Println("~~~~~~~~~~~~~~~~~~ F L A S H C A R D S ~~~~~~~~~~~~~~~~~~")
 	for _, card := range flashcards {
 		fmt.Println(" ")
-		for i := 0; i < 25 - len(card.Definition); i++ {
+		for i := 0; i < 25-len(card.Definition); i++ {
 			//Formatting - pad left
 			fmt.Print(" ")
 		}

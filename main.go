@@ -16,6 +16,12 @@ type Flashcard struct {
 	Answer     string
 }
 
+type UserFlashcard struct {
+	Definition string
+	Answer 	   string
+	UserAnswer string
+}
+
 func main() {
 	quit := false
 
@@ -57,7 +63,7 @@ func PracticeFlashcards(flashcards []Flashcard) {
 	//todo: this should keep track of the user's incorrect answers, not just which answer was incorrect
 	numberOfQuestions, err := strconv.Atoi(strings.Trim(GetUserInput("Enter the number of questions you would like: "), "\r\n"))
 	var correctFlashcards []Flashcard
-	var incorrectFlashcards []Flashcard
+	var incorrectFlashcards []UserFlashcard
 
 	HandleError(err)
 
@@ -67,28 +73,37 @@ func PracticeFlashcards(flashcards []Flashcard) {
 
 	for i := 0; i < numberOfQuestions; i++ {
 		randomFlashcard := flashcards[rand.Intn(len(flashcards))]
-		if AskQuestion(randomFlashcard) {
+		result, answer := AskQuestion(randomFlashcard)
+		if result {
 			correctFlashcards = append(correctFlashcards, randomFlashcard)
 		} else {
-			incorrectFlashcards = append(incorrectFlashcards, randomFlashcard)
+			incorrectFlashcards = append(incorrectFlashcards, ConvertFlashcardToUserFlashcard(randomFlashcard, answer))
 		}
 	}
 
 	ShowGameReport(correctFlashcards, incorrectFlashcards)
 }
 
+func ConvertFlashcardToUserFlashcard(flashcard Flashcard, userAnswer string) UserFlashcard {
+	return UserFlashcard {
+		Answer: flashcard.Answer,
+		Definition: flashcard.Definition,
+		UserAnswer: userAnswer,
+	}
+}
+
 ///This returns whether the user correctly answered the question or not
-func AskQuestion(flashcard Flashcard) bool {
+func AskQuestion(flashcard Flashcard) (bool, string) {
 	fmt.Println("Definition: ", flashcard.Definition)
 	userAnswer := GetUserInput("Answer: ")
-	return CheckAnswer(flashcard.Answer, userAnswer)
+	return CheckAnswer(flashcard.Answer, userAnswer), userAnswer
 }
 
 func CheckAnswer(correctAnswer string, userAnswer string) bool {
 	return strings.EqualFold(strings.TrimSpace(correctAnswer), strings.TrimSpace(userAnswer))
 }
 
-func ShowGameReport(correctFlashcards []Flashcard, incorrectFlashcards []Flashcard) {
+func ShowGameReport(correctFlashcards []Flashcard, incorrectFlashcards []UserFlashcard) {
 	fmt.Println()
 	fmt.Println()
 	fmt.Println("~~~~~~~~~~Report~~~~~~~~~~")
@@ -106,6 +121,7 @@ func ShowGameReport(correctFlashcards []Flashcard, incorrectFlashcards []Flashca
 		for _, incorrect := range incorrectFlashcards {
 			fmt.Println("	Definition: ", incorrect.Definition)
 			fmt.Println("	Answer: ", incorrect.Answer)
+			fmt.Println("   Your answer: ", incorrect.UserAnswer)
 		}
 	}
 	fmt.Println()
